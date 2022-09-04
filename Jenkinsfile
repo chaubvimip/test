@@ -1,5 +1,5 @@
 pipeline {
-   agent dev-aws
+   agent any
    stages {
        stage('Build Code') {
            steps {
