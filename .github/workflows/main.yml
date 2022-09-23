@@ -30,7 +30,7 @@ jobs:
       - name: coekr build
         id : docekr_build
         run: |
-            docker build -t ${{ env.IMAGE_TAG }}  .
+            docker build -t ${{ env.IMAGE_TAG }} .
             aws ecr get-login-password --region ${{ secrets.REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ECR_URI }
             docker tag ${{ env.IMAGE_TAG }}  ${{ env.AWS_ECR_URI }}/${{ env.IMAGE_TAG }} 
             aws ecr batch-delete-image --repository-name ${{ env.AWS_ECR_URI }} --image-ids imageTag=dev
