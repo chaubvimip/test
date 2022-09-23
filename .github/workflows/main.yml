@@ -1,0 +1,30 @@
+name: build test
+on:
+  repository_dispatch:
+    types: [test]
+env:
+  AWS_ECR_URI : 543300470803.dkr.ecr.ap-southeast-1.amazonaws.com
+  AWS_ECR_REPO : test
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+        IMAGE_TAG : $AWS_ECR_REPO:${{ github.event.client_payload.image_tag }}
+        AWS_ECR_FULL_URI : $AWS_ECR_URI/$AWS_ECR_REPO:${{ github.event.client_payload.image_tag }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+   
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ github.event.client_payload.region }}
+      - name: download kubectl
+        run : curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.21.2/2021-07-05/bin/linux/amd64/kubectl
+      - name: coekr build
+        id : docekr_build
+        run: |
+            docker build -t ${{ env.IMAGE_TAG }} .
+  
