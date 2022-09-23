@@ -7,12 +7,12 @@ on:
   repository_dispatch:
     types: [test]
 env:
-  AWS_ECR_URI : 543300470803.dkr.ecr.ap-southeast-1.amazonaws.com
   AWS_ECR_REPO : test
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
+        AWS_ECR_URI : 543300470803.dkr.ecr.ap-southeast-1.amazonaws.com
         IMAGE_TAG : test:dev
         AWS_ECR_FULL_URI : $AWS_ECR_URI/$AWS_ECR_REPO
     steps:
@@ -31,5 +31,5 @@ jobs:
         id : docekr_build
         run: |
             docker build -t ${{ env.IMAGE_TAG }} .
-            aws ecr get-login-password --region ${{ secrets.REGION }} | docker login --username AWS --password-stdin 543300470803.dkr.ecr.ap-southeast-1.amazonaws.com
+            aws ecr get-login-password --region ${{ secrets.REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ECR_URI }}
             
