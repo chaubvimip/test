@@ -31,5 +31,5 @@ jobs:
         id : docekr_build
         run: |
             docker build -t ${{ env.IMAGE_TAG }} .
-            aws ecr get-login-password --region ${{ secrets.REGION }} | docker login --username AWS --password-stdin ${{ env.AWS_ECR_URI }
+            aws ecr get-login-password --region secrets.REGION  | docker login --username AWS --password-stdin 543300470803.dkr.ecr.ap-southeast-1.amazonaws.com
             
