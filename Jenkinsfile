@@ -1,7 +1,7 @@
 pipeline {
    agent none
    stages {
-      stage('Build Code') {
+      stage('Build Image') {
 	     when {
              branch 'main'
             }
@@ -12,12 +12,10 @@ pipeline {
                 }
             }
          steps {
-               sh """
-               echo "Building Artifact"
-               """
+               sh "cd /home/ubuntu/jenkins/multi-branch/repo1 && docker build nginx_v1 ."
            }
        }
-      stage('Deploy Code') {
+      stage('Deploy Image') {
         when {
              branch 'main'
             }
